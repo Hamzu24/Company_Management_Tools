@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Names</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script>
+	  var hiredNumber = null;
+	  var savedWorkers = {};
+  $(document).ready(function() {
+if (localStorage.getItem('savedWorkers') !== undefined || localStorage.getItem('savedWorkers') !== null || localStorage.getItem('savedWorkers') !== NaN) {
+	savedWorkers = JSON.parse(localStorage.getItem('savedWorkers'));
+	hiredNumber =  parseInt(localStorage.getItem('hired'));
+	localStorage.setItem('savedWorkers', JSON.stringify(savedWorkers));
+	localStorage.setItem('hired', Object.keys(JSON.parse(localStorage.getItem('savedWorkers'))).length);
+	for (i in savedWorkers) {
+	$('#mainTable').append('<tr id="SELECT2'+savedWorkers['Worker'+(i+1)].selected+'"><td>'+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].name+' '+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].surname+'</td><td>'+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].name+' '+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].surname+' is very '+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].adj1+', but also quite '+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].adj2+'</td><td><img src="myAvatar'+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].face+'" class="images"/></td><td><button id="killb'+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].selected+'" onclick="kill('+JSON.parse(localStorage.getItem('savedWorkers'))['Worker'+(i+1).toString()].selected+')">Fire</button></td></tr>');
+	$('.images').css('width', '100px');
+	$('.images').css('height', '75px');
+	}
+} else {
+	savedWorkers = {};
+	hiredNumber =  0;
+	localStorage.setItem('savedWorkers', JSON.stringify(savedWorkers));
+	localStorage.setItem('hired', Object.keys(JSON.parse(localStorage.getItem('savedWorkers'))).length);
+}
+  });
+  
+function Random(min, max) {
+return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+$(document).ready(function() {
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+addWorker();
+});
+
+var rows = 0;
+var currentName = '';
+var currentSurname = '';
+var face = Random(1, 20);
+var fixedvar = 0;
+var currentAdj = {'adjective1' : '', 'adjective2' : ''};
+var currentFace = 0;
+var THIS = 0;
+var midTransfer = {};
+  
+var names = ['humpty', 'dumpty', 'Daniel', 'Leo', 'Nikita', 'James', 'Jeff', 'Johnny', 'Bob', 'Herb', 'Hamza', 'Louis', 'Filet', 'Alex', 'Bill', 'Tim', 'Edward', 'Fatima', 'Isham', 'DongDong', 'Grim', 'Fat', 'Mr', 'Mrs', 'Miss', 'Ms', 'Sir', 'Dr', 'Main', 'Asznee', 'Hammez', 'Jas', 'Carlos', 'Big', 'Stormzy', 'my', 'reaper', 'Andrea', 'Serge', 'Osvaldo'];
+var surnames = ['dumpty', 'Kremer', 'Kreamer', 'Krivdin', 'Pereira', 'Beast', 'Legend', 'Hark', 'Smith', 'Dumb', 'Of Death', 'Reaper', 'Pig', 'Cow', 'Idiot', 'Fatima', 'DongDong', 'Man', 'Cooper', 'Dog', 'Vogel', 'Rye', 'Carlos', 'Rodriugez', 'Gomes', 'Shaq','guy'];
+var adjectives = ['stupid', 'dumb', 'idiotic', 'loving', 'smart', 'horrible', 'disguting', 'fearful', 'large', 'small', 'cold', 'tender', 'horrific', 'annoying', 'horrible', 'fat', 'ugly', 'pretty', 'loud', 'quiet', 'thin', 'vivacious//', 'bitter', 'cuddly', 'reserved', 'horrid', 'affectionate', 'amiable', 'considerate', 'careful', 'reckless', 'belligerent', 'bossy', 'boring', 'cowardly', 'compulsive', 'cruel', 'cunning'];
+function addWorker() {
+fixedvar++;
+rows++;
+THIS++;
+currentName = names[Random(0, 39)];
+currentSurname = surnames[Random(0, 26)];
+currentAdj.adjective1 = adjectives[Random(0, 37)];
+currentAdj.adjective2 = adjectives[Random(0, 37)];
+currentFace = Random(1, 20);
+$('#sideTable').append('<tr class="row'+rows.toString()+'" id="SELECT'+fixedvar.toString()+'"><td> <p>'+currentName.toString()+' '+currentSurname.toString()+'</p></td><td><p>'+currentName.toString()+' '+currentSurname.toString()+' is very '+currentAdj.adjective1+', but also quite '+currentAdj.adjective2+'</p></td><td><img src="faces/myAvatar'+currentFace+'.png" class="images"/></td><td><button id="firebut'+fixedvar.toString()+'" onclick="fire('+fixedvar.toString()+')">Reject</button><br/><button id="hirebut'+fixedvar.toString()+'" class="N.'+THIS.toString()+'" onclick="hire(\''+fixedvar.toString()+'\',\''+currentName.toString()+'\',\''+currentSurname.toString()+'\',\''+(currentAdj.adjective1).toString()+'\',\''+(currentAdj.adjective2).toString()+'\',\''+currentFace.toString()+'\')">Hire</button></td></tr>');
+$('.images').css('width', '100px');
+$('.images').css('height', '75px');
+}
+
+function hire(selected, name, surname, adj1, adj2, face) {
+hiredNumber++;
+localStorage.setItem('hired', hiredNumber.toString());
+console.log((selected+name+surname+adj1+adj2+face).toString() + '');
+$('#mainTable').append('<tr id="SELECT2'+selected.toString()+'"><td><p>'+name+' '+surname+'</p></td> <td><p>'+name+' '+surname+' is very '+adj1+', but also quite '+adj2+'</p></td> <td><img src="faces/myAvatar'+face+'" class="images"/></td> <td><button id="killb'+selected+'" onclick="kill('+selected.toString()+')">Fire</button></td></tr>');
+$('.images').css('width', '100px');
+$('.images').css('height', '75px');
+$('#SELECT'+selected.toString()).remove();
+console.log('it is: '+selected.toString());
+savedWorkers['Worker'+hiredNumber.toString()] = {};
+savedWorkers['Worker'+hiredNumber.toString()].name = name;
+savedWorkers['Worker'+hiredNumber.toString()].surname = surname;
+savedWorkers['Worker'+hiredNumber.toString()].adj1 = adj1;
+savedWorkers['Worker'+hiredNumber.toString()].adj2 = adj2;
+savedWorkers['Worker'+hiredNumber.toString()].face = face;
+savedWorkers['Worker'+hiredNumber.toString()].selected = localStorage.getItem('hired');
+localStorage.setItem('savedWorkers', JSON.stringify(savedWorkers));
+}
+function fire(selected) {
+$('#SELECT'+selected.toString()).remove();
+}
+
+function kill(current) {
+savedWorkers['Worker'+current.toString()] = {};
+localStorage.setItem('savedWorkers', JSON.stringify(savedWorkers));
+hiredNumber = hiredNumber-1;
+localStorage.setItem('hired', hiredNumber.toString());
+$('#SELECT2'+current.toString()).remove();
+midTransfer = {};
+for (var i = 0; i < Object.keys(savedWorkers).length; i++) {
+if (i+1 !== current) {
+if (i+1 < current) {
+midTransfer['Worker'+(i+1).toString()] = {};
+midTransfer['Worker'+(i+1).toString()].selected = savedWorkers['Worker'+(i+1).toString()].selected;
+midTransfer['Worker'+(i+1).toString()].name = savedWorkers['Worker'+(i+1).toString()].name;
+midTransfer['Worker'+(i+1).toString()].surname = savedWorkers['Worker'+(i+1).toString()].surname;
+midTransfer['Worker'+(i+1).toString()].adj1 = savedWorkers['Worker'+(i+1).toString()].adj1;
+midTransfer['Worker'+(i+1).toString()].adj2 = savedWorkers['Worker'+(i+1).toString()].adj2;
+midTransfer['Worker'+(i+1).toString()].face = savedWorkers['Worker'+(i+1).toString()].face;
+} else if (i+1 > current) {
+midTransfer['Worker'+i.toString()] = {};
+midTransfer['Worker'+i.toString()].selected = parseInt(savedWorkers['Worker'+(i+1).toString()].selected)-1;
+midTransfer['Worker'+i.toString()].name = savedWorkers['Worker'+(i+1).toString()].name;
+midTransfer['Worker'+i.toString()].surname = savedWorkers['Worker'+(i+1).toString()].surname;
+midTransfer['Worker'+i.toString()].adj1 = savedWorkers['Worker'+(i+1).toString()].adj1;
+midTransfer['Worker'+i.toString()].adj2 = savedWorkers['Worker'+(i+1).toString()].adj2;
+midTransfer['Worker'+i.toString()].face = savedWorkers['Worker'+(i+1).toString()].face;
+}
+}
+}
+savedWorkers = midTransfer;
+console.log(JSON.stringify(midTransfer));
+localStorage.setItem('savedWorkers', JSON.stringify(savedWorkers));
+}
+
+console.log('the array is '+names.length+' '+surnames.length+'');
+      </script>
+  </head>
+  <body>
+<button onclick="addWorker()">Add Worker</button>
+<br/>
+<table id="sideTable" class="tables" border="1|0"><tr>
+<th class="row1W">Name</th><th class="row1W">Description</th><th class="row1W">Profile</th><th class="row1W">Options</th></tr>
+</table>
+<table border="1|0" id="mainTable" class="tables">
+<tr><th class="row1">Name</th><th class="row1">Description</th><th class="row1">Profile</th><th class="row1">Options</th></tr>
+</table>
+  <style>
+.row1 {
+width: 150px;
+height: 25px;
+}
+.tables {
+text-align: center;
+}
+.row1W {
+height: 25px;
+width: 150px;
+right: 0px;
+}
+#sideTable {
+left: 900px;
+position: absolute;
+}
+#mainTable {
+position: absolute;
+}
+  </style>
+  </body>
+</html>
+
+
+

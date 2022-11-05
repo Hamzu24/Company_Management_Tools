@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Test</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script>
+  
+  function Random(min, max) {
+return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+          var price = null;
+          var name = null;
+          var Reader = null;
+          var products = 0;
+          var rows = 0;
+          var selectedRow = null;
+          var descriptions = 0;
+  var stars = 0;
+  var atoms = 0;
+          
+          function addProduct() {
+              rows++;
+              descriptions++;
+              products = products + 1;
+              if (($('#input3').val()).toString() === "N/A" || ($('#input3').val()).toString() === '') {
+Reader = new FileReader();
+                  $('#productTable').append('<tr id="row'+rows.toString()+'"><td><h2 id="head'+descriptions.toString()+'">'+$('#input2').val()+'</h2></td><td id="montd'+rows.toString()+'"><h3>£<span id="mon'+rows.toString()+'">'+($('#input1').val()).toString()+'</span></h3></td><td><img src="'+$('#input4').val()+'" id="outImage'+products.toString()+'" class="Images"/></td><td><h3 id="desc'+descriptions.toString()+'">'+$('#input5').val()+'</h3></td></tr>');
+                  $('#desc'+descriptions.toString()).css('font-size', '12px');
+                  $('.Images').css('width', '150px');
+                  $('.Images').css('height', '100px');
+                  var preview = document.querySelector('#outImage'+products.toString());
+                  var file    = document.querySelector('input[type=file]').files[0];
+                  var reader  = new FileReader();
+
+      reader.addEventListener("load", function () {
+        preview.src = reader.result;
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+                  console.log(''+reader.toString());
+              } else {
+console.log(''+$('#input3').val());
+                  $('#productTable').append('<tr id="row'+rows.toString()+'"><td><h2 id="head'+descriptions.toString()+'">'+$('#input2').val()+'</h2></td><td id="montd'+rows.toString()+'"><h3>£<span id="mon'+rows.toString()+'">'+($('#input1').val()).toString()+'</span></h3></td><td><img src="'+$('#input4').val()+'" id="outImage'+products.toString()+'" class="Images"/></td><td><h3 id="desc'+descriptions.toString()+'">'+$('#input5').val()+'</h3></td></tr>');
+  $('#outImage'+products.toString()).attr('src', ''+($('#input3').val()).toString());
+                  $('#desc'+descriptions.toString()).css('font-size', '12px');
+                  $('.Images').css('width', '150px');
+                  $('.Images').css('height', '100px');
+              }
+          }
+          
+        function deleteProduct() {
+            selectedRow = $('#input6').val();
+            $('#row'+selectedRow.toString()).remove();
+for (var i = rows; i > selectedRow; i--) {
+$('#row'+i.toString()).attr('id', 'row'+(i-1).toString());
+}
+        }
+          
+            function upgradeProduct() {
+stars++;
+                selectedRow = $('#input6').val();
+                switch(($('#input7').val()).toString()) {
+                    case "money":
+$('#montd'+selectedRow.toString()).append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Gold_Star.svg/2000px-Gold_Star.svg.png' id='star"+stars.toString()+"'/>");
+$('#star'+stars.toString()).css('width', '25px');
+$('#star'+stars.toString()).css('height', '25px');
+                        $('#mon'+selectedRow.toString()).html(''+(Random(parseInt($('#mon'+selectedRow.toString()).html())-5, parseInt($('#mon'+selectedRow.toString()).html())+5)).toString());
+if (parseInt($('#mon'+selectedRow.toString()).html())< 0) {
+setTimeout(function() {
+$('#mon'+selectedRow.toString()).html(''+(Math.pow(parseInt($('#mon'+selectedRow.toString()).html()), 2)).toString());
+}, 1000);
+} else {
+null;
+}
+                    break;
+                    case "science":
+                        $('#outimage'+products.toString()).append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Stylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.png/180px-Stylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.png' id='atom"+atoms.toString()+"'/>");
+						$('#atom'+atoms.toString()).css('width', '25px');
+						$('#atom'+atoms.toString()).css('height', '25px');
+                    break;
+                }
+            }
+          
+      </script>
+  </head>
+  <body>
+      <main>
+      <center><h1><u><b>Test For Google Maps Game</b></u></h1></center>
+      <br/>
+      <h3><center><u>Product Price Below (Just Numbers)</u></center></h3>
+      <center><input type="number" id="input1"/></center>
+      <h3><center><u>Product Name Below</u></center></h3>
+      <center><input type="text" id="input2"/></center>
+      <h3><center><u>Product Description Below</u></center></h3>
+      <center><input type="text" id="input5"/></center>
+      <h3><center><u>Alternate Image Selector: input the SRC Below. This will take priority over the file selector.</u></center></h3>
+      <center><input type="text" id="input3"/></center>
+      <h3><center><u>Select A File for the image Below. Currently only allowing pngs, gifs and jpegs.</u></center></h3>
+      <center><input type="file" name="myImage" accept="image/x-png,image/gif,image/jpeg" id="input4"/></center>
+      <br/>
+      <center><button id="submitb" onclick="addProduct()">Submit Product</button></center>
+      <button id="submitb" onclick="deleteProduct()">Delete Product. Input the product number.</button>
+      <button id="submitb" onclick="upgradeProduct()">Upgrade Product. Input the product number, and select the type in the other box: money and effectivity</button>
+      <input type="number" id="input6"/><input type="text" id="input7"/>
+      <br/>
+      <br/>
+      <table border="1|0" id="productTable">
+          <tr><th class="Row1">Product</th><th class="Row1">Cost</th><th class="Row1">Image</th><th class="Row1">Description</th></tr>
+      </table>
+      </main>
+  <style>
+      .Row1 {
+          width: 200px;
+          height: 50px;
+      }
+      #input2 {
+          width: 100px;
+          height: 25px;
+      }
+      #input1 {
+          width: 100px;
+          height: 10px;
+      }
+      #submitb {
+          width: 200px;
+          height: 50px;
+          color: gold;
+          background-color: maroon;
+          font-size: 10px;
+      }
+      #productTable {
+          text-align: center;
+      }
+      #input3 {
+          width: 750px;
+      }
+      #input5 {
+          width: 400px;
+      }
+      #input6 {
+          width: 50px;
+      }
+      #input7 {
+          width: 50px;
+      }
+  </style>
+  </body>
+</html>
+
